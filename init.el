@@ -36,6 +36,10 @@
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
+(use-package company
+  :config
+  (global-set-key (kbd "C-c SPC") 'company-complete-common))
+
 (use-package company-lsp
   :ensure t
   :config
@@ -57,7 +61,7 @@
     :config
     (add-hook 'rust-mode-hook 'flycheck-mode)))
 
-(use-package 'cargo
+(use-package cargo
   :ensure t
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
@@ -86,7 +90,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
