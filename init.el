@@ -7,30 +7,75 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
-(load-theme 'dracula t)
+(when (not (package-installed-p 'use-package))
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-(require 'helm)
-(helm-mode 1)
+(use-package dracula-theme
+  :ensure t
+  :config
+  (load-theme 'dracula t))
 
-(require 'evil)
-(evil-mode 1)
+(use-package helm
+  :ensure t
+  :config
+  (helm-mode 1))
 
-(require 'powerline)
-(powerline-center-evil-theme)
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1))
 
-(require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-center-evil-theme))
 
-(require 'company-lsp)
-(push 'company-lsp company-backends)
+(use-package lsp-ui
+  :ensure t
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
+(use-package company-lsp
+  :ensure t
+  :config
+  (push 'company-lsp company-backends))
+
+;; Emacs Lisp
+(use-package company
+  :ensure t
+  :config
+  (push 'company-elisp company-backends)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode))
+
+;; Rust
+(use-package lsp-mode
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'lsp)
+  (use-package flycheck-rust
+    :config
+    (add-hook 'rust-mode-hook 'flycheck-mode)))
+
+(use-package 'cargo
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+  
 ;; Haskell
-(require 'lsp)
-(require 'lsp-haskell)
-(lsp-haskell-set-hlint-on)
-(add-hook 'haskell-mode-hook #'lsp)
-(add-hook 'haskell-mode-hook 'flycheck-mode)
+(use-package lsp-haskell
+  :ensure t
+  :config
+  (lsp-haskell-set-hlint-on)
+  (use-package lsp-mode
+    :ensure t
+    :config
+    (add-hook 'haskell-mode-hook #'lsp))
+  (use-package flycheck
+    :config
+    (add-hook 'haskell-mode-hook 'flycheck-mode)))
 
+(setq auto-save-default nil)
 (set-frame-font "Hack 12" nil t)
 (setq inhibit-startup-screen t)
 
@@ -41,10 +86,10 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (flycheck-haskell yaml-mode helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((min-colors 16777216)) (:background "#282a36" :foreground "#f8f8f2")) (t (:background "#000000" :foreground "#f8f8f2")))))
