@@ -45,6 +45,18 @@
   :config
   (push 'company-lsp company-backends))
 
+(use-package rainbow-delimiters
+  :ensure t
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package hl-todo
+  :ensure t
+  :config
+  (hl-todo-mode)
+  (define-key hl-todo-mode-map (kbd "C-t p") 'hl-todo-previous)
+  (define-key hl-todo-mode-map (kbd "C-t n") 'hl-todo-next))
+
 ;; Emacs Lisp
 (use-package company
   :ensure t
@@ -79,8 +91,10 @@
     :config
     (add-hook 'haskell-mode-hook 'flycheck-mode)))
 
+(global-linum-mode)
 (setq auto-save-default nil)
 (set-frame-font "Hack 12" nil t)
+(set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
 (setq inhibit-startup-screen t)
 
 (custom-set-variables
@@ -90,7 +104,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
