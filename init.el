@@ -31,6 +31,14 @@
   :config
   (powerline-center-evil-theme))
 
+(use-package visual-regexp-steroids
+  :ensure t
+  :config
+  (define-key global-map (kbd "C-c r") 'vr/replace)
+  (define-key global-map (kbd "C-c q") 'vr/query-replace)
+  (define-key esc-map (kbd "C-r") 'vr/isearch-backward)
+  (define-key esc-map (kbd "C-s") 'vr/isearch-forward))
+
 (use-package lsp-ui
   :ensure t
   :config
@@ -104,7 +112,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
