@@ -46,7 +46,9 @@
 
 (use-package company
   :config
-  (global-set-key (kbd "C-c SPC") 'company-complete-common))
+  (global-set-key (kbd "C-SPC") 'company-complete-common)
+  (setq company-dabbrev-downcase 0)
+  (setq company-idle-delay 0.1))
 
 (use-package company-lsp
   :ensure t
@@ -101,6 +103,7 @@
 
 (global-linum-mode)
 (setq auto-save-default nil)
+(setq make-backup-files nil)
 (set-frame-font "Hack 12" nil t)
 (set-fontset-font t 'hangul (font-spec :name "NanumGothicCoding"))
 (setq inhibit-startup-screen t)
