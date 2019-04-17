@@ -32,8 +32,17 @@
 
 (use-package evil
   :ensure t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 (use-package powerline
   :ensure t
@@ -59,6 +68,7 @@
   (setq company-idle-delay 0.1))
 
 (use-package company-lsp
+  :after company
   :ensure t
   :config
   (push 'company-lsp company-backends))
@@ -100,6 +110,7 @@
   (add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode)))
 
 (use-package company-glsl
+  :after company
   :ensure t
   :config
   (add-to-list 'company-backends 'company-glsl)
