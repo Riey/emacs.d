@@ -75,6 +75,14 @@
   (define-key hl-todo-mode-map (kbd "C-t p") 'hl-todo-previous)
   (define-key hl-todo-mode-map (kbd "C-t n") 'hl-todo-next))
 
+(use-package neotree
+  :ensure t
+  :config
+  (global-set-key [f2] 'neotree-toggle)
+  (use-package all-the-icons
+    :ensure t)
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+
 ;; Emacs Lisp
 (use-package company
   :ensure t
@@ -143,7 +151,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
