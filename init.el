@@ -71,7 +71,7 @@
 (use-package hl-todo
   :ensure t
   :config
-  (hl-todo-mode)
+  (add-hook 'prog-mode-hook #'hl-todo-mode)
   (define-key hl-todo-mode-map (kbd "C-t p") 'hl-todo-previous)
   (define-key hl-todo-mode-map (kbd "C-t n") 'hl-todo-next))
 
