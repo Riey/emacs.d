@@ -14,9 +14,9 @@
 (global-linum-mode)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
-(add-to-list 'default-frame-alist '(font . "D2Coding-9.5"))
-(set-face-attribute 'default t :font "D2Coding-9.5")
-(set-fontset-font t 'hangul (font-spec :name "D2Coding-9.5"))
+(add-to-list 'default-frame-alist '(font . "Hack-11"))
+(set-face-attribute 'default t :font "Hack-11")
+(set-fontset-font t 'hangul (font-spec :name "D2Coding-11"))
 
 (setq inhibit-startup-screen t)
 
@@ -118,13 +118,28 @@
 
 ;; Rust
 (use-package lsp-mode
-  :ensure t
-  :config
-  (add-hook 'rust-mode-hook #'lsp)
-  (use-package flycheck-rust
-    :ensure t
-    :config
-    (add-hook 'rust-mode-hook 'flycheck-mode)))
+  :ensure t)
+(use-package dash
+  :ensure t)
+(use-package ht
+  :ensure t)
+(use-package yasnippet
+  :ensure t)
+(use-package flycheck-rust
+  :ensure t)
+(load "~/.emacs.d/ra-emacs-lsp")
+(require 'ra-emacs-lsp)
+(add-hook 'rust-mode-hook #'lsp)
+(add-hook 'rust-mode-hook 'flycheck-mode)
+
+;;(use-package lsp-mode
+;;  :ensure t
+;;  :config
+;;  (add-hook 'rust-mode-hook #'lsp)
+;;  (use-package flycheck-rust
+;;    :ensure t
+;;    :config
+;;    (add-hook 'rust-mode-hook 'flycheck-mode)))
 
 (use-package cargo
   :ensure t
@@ -162,7 +177,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package helm company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
