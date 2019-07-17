@@ -49,6 +49,11 @@
   :config
   (powerline-center-evil-theme))
 
+(use-package golden-ratio
+  :ensure t
+  :config
+  (golden-ratio-mode 1))
+
 (use-package visual-regexp-steroids
   :ensure t
   :config
@@ -129,7 +134,6 @@
   :ensure t)
 (load "~/.emacs.d/ra-emacs-lsp")
 (require 'ra-emacs-lsp)
-(add-hook 'rust-mode-hook #'lsp)
 (add-hook 'rust-mode-hook 'flycheck-mode)
 
 ;;(use-package lsp-mode
