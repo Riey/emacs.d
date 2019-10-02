@@ -65,7 +65,14 @@
   (define-key esc-map (kbd "C-r") 'vr/isearch-backward)
   (define-key esc-map (kbd "C-s") 'vr/isearch-forward))
 
+(use-package lsp-mode
+  :ensure t)
+
+(use-package yasnippet
+  :ensure t)
+
 (use-package lsp-ui
+  :after lsp-mode
   :ensure t
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
@@ -126,33 +133,25 @@
 
 ;; Rust
 (use-package lsp-mode
-  :ensure t)
-(use-package dash
-  :ensure t)
-(use-package ht
-  :ensure t)
-(use-package yasnippet
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook #'lsp))
 (use-package flycheck-rust
-  :ensure t)
-(load "~/.emacs.d/ra-emacs-lsp")
-(require 'ra-emacs-lsp)
-(add-hook 'rust-mode-hook 'flycheck-mode)
-(add-hook 'rust-mode-hook #'lsp)
-
-;;(use-package lsp-mode
-;;  :ensure t
-;;  :config
-;;  (add-hook 'rust-mode-hook #'lsp)
-;;  (use-package flycheck-rust
-;;    :ensure t
-;;    :config
-;;    (add-hook 'rust-mode-hook 'flycheck-mode)))
-
+  :ensure t
+  :config
+  (add-hook 'rust-mode-hook 'flycheck-mode))
 (use-package cargo
   :ensure t
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+(when-let ((use-rust-analzer t))
+  (use-package dash
+    :ensure t)
+  (use-package ht
+    :ensure t)
+  (load "~/.emacs.d/ra-emacs-lsp")
+  (require 'ra-emacs-lsp))
 
 ;; F#
 (use-package fsharp-mode
