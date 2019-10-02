@@ -138,6 +138,7 @@
 (load "~/.emacs.d/ra-emacs-lsp")
 (require 'ra-emacs-lsp)
 (add-hook 'rust-mode-hook 'flycheck-mode)
+(add-hook 'rust-mode-hook #'lsp)
 
 ;;(use-package lsp-mode
 ;;  :ensure t
