@@ -20,6 +20,8 @@
 (add-to-list 'default-frame-alist '(font . "Hack-11"))
 (set-face-attribute 'default t :font "Hack-11")
 (set-fontset-font t 'hangul (font-spec :name "D2Coding-11"))
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 
 (setq inhibit-startup-screen t)
 
@@ -44,7 +46,8 @@
 (use-package evil-collection
   :after evil
   :ensure t
-  :config
+  :custom (evil-collection-setup-minibuffer t)
+  :init
   (evil-collection-init))
 
 (use-package powerline
