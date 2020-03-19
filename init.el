@@ -100,6 +100,7 @@
  (evil-leader/set-key-for-mode
    'rust-mode
    "c c"   'cargo-process-check
+   "c f"   'cargo-process-fmt
    "c b"   'cargo-process-build
    "c t"   'my-cargo-process-test)
  (global-evil-leader-mode))
