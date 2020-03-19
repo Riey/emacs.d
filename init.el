@@ -137,9 +137,12 @@
 
 (use-package company
   :config
-  (global-set-key (kbd "C-SPC") 'company-complete-common)
-  (global-set-key (kbd "C-l")   'company-complete-selection)
-  (global-set-key (kbd "<tab>") 'company-complete-common-or-cycle)
+  (define-key company-mode-map (kbd "C-SPC") 'company-complete-common)
+  (define-key company-mode-map (kbd "C-l")   'company-complete-selection)
+  (define-key company-mode-map (kbd "C-h")   'company-abort)
+  (define-key company-mode-map (kbd "C-j")   'company-select-next)
+  (define-key company-mode-map (kbd "C-k")   'company-select-previous)
+  (define-key company-mode-map (kbd "<tab>") 'company-complete-common-or-cycle)
   (setq company-idle-delay 0.1)
   (add-hook 'prog-mode-hook 'global-company-mode))
 
