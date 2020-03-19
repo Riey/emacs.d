@@ -96,12 +96,13 @@
    "t"     'treemacs
    "r"     'recentf-open-files
    "e"     'find-file
-   "<tab>" 'previous-buffer)
+   "<tab>" 'mode-line-other-buffer)
  (evil-leader/set-key-for-mode
    'lsp-mode
    "l g g" 'lsp-goto-type-definition
    "l g r" 'lsp-find-references
    "l r"   'lsp-rename
+   "l b r" 'lsp-restart-workspace
    "l h"   'lsp-hover
    "l a"   'lsp-auto-execute-action
    "l f"   'lsp-format-buffer
@@ -115,21 +116,15 @@
  (global-evil-leader-mode))
 
 (use-package evil-magit)
-
-(use-package evil-collection
-  :after evil
-  :custom (evil-collection-setup-minibuffer t)
+(use-package evil-escape
   :config
-  (evil-collection-init))
-
-(use-package golden-ratio
-  :config
-  (golden-ratio-mode 1))
+  (setq evil-escape-key-sequence "jk")
+  (evil-escape-mode))
 
 (use-package lsp-mode
   :config
-  (with-eval-after-load 'lsp-mode
-    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)))
+  (setq lsp-eldoc-enable-hover t)
+  (setq lsp-eldoc-render-all nil))
 
 (use-package which-key
   :config
@@ -230,10 +225,10 @@
  ;; If there is more than one, they won't work right.
  '(evil-collection-setup-minibuffer t)
  '(lsp-rust-analyzer-inlay-hints t t)
- '(lsp-rust-server (quote rust-analyzer) t)
+ '(lsp-rust-server (quote rust-analyzer))
  '(package-selected-packages
    (quote
-    (evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
