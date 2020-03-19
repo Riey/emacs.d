@@ -32,6 +32,12 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
+
 (use-package dracula-theme
   :config
   (load-theme 'dracula t))
@@ -109,13 +115,6 @@
 (use-package golden-ratio
   :config
   (golden-ratio-mode 1))
-
-(use-package visual-regexp-steroids
-  :config
-  (define-key global-map (kbd "C-c r") 'vr/replace)
-  (define-key global-map (kbd "C-c q") 'vr/query-replace)
-  (define-key esc-map (kbd "C-r") 'vr/isearch-backward)
-  (define-key esc-map (kbd "C-s") 'vr/isearch-forward))
 
 (use-package lsp-mode
   :config
@@ -218,7 +217,7 @@
  ;; If there is more than one, they won't work right.
  '(evil-collection-setup-minibuffer t)
  '(lsp-rust-analyzer-inlay-hints t t)
- '(lsp-rust-server (quote rust-analyzer))
+ '(lsp-rust-server (quote rust-analyzer) t)
  '(package-selected-packages
    (quote
     (evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
