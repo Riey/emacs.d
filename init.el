@@ -16,6 +16,7 @@
 
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode)
+(electric-pair-mode)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
@@ -106,10 +107,8 @@
     "t"     'treemacs
     "r"     'recentf-open-files
     "e"     'find-file
-    "<tab>" 'mode-line-other-buffer)
-  (evil-leader/set-key-for-mode
-    'lsp-mode
-    "l g g" 'lsp-goto-type-definition
+    "<tab>" 'mode-line-other-buffer
+    "l g g" 'lsp-find-definition
     "l g r" 'lsp-find-references
     "l r"   'lsp-rename
     "l b r" 'lsp-restart-workspace
@@ -128,7 +127,10 @@
 (use-package lsp-mode
   :config
   (setq lsp-eldoc-enable-hover t)
-  (setq lsp-eldoc-render-all nil))
+  (setq lsp-eldoc-render-all t)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-enable-completion-at-point t)
+  (setq lsp-enable-xref t))
 
 (use-package which-key
   :config
@@ -136,21 +138,26 @@
   (which-key-setup-minibuffer)
   (which-key-mode))
 
-(use-package yasnippet)
+(use-package yasnippet
+  :config
+  (add-hook 'lsp-mode-hook 'yas-minor-mode-on))
 
 (use-package lsp-ui
   :after lsp-mode
   :config
+  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-peek-always-show t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package company
   :config
   (define-key company-mode-map (kbd "C-SPC") 'company-complete-common)
-  (define-key company-mode-map (kbd "C-l")   'company-complete-selection)
-  (define-key company-mode-map (kbd "C-h")   'company-abort)
-  (define-key company-mode-map (kbd "C-j")   'company-select-next)
-  (define-key company-mode-map (kbd "C-k")   'company-select-previous)
-  (define-key company-mode-map (kbd "<tab>") 'company-complete-common-or-cycle)
+  (define-key company-active-map (kbd "C-l")   'company-complete-selection)
+  (define-key company-active-map (kbd "<return>")   'company-complete-selection)
+  (define-key company-active-map (kbd "C-h")   'company-abort)
+  (define-key company-active-map (kbd "C-j")   'company-select-next)
+  (define-key company-active-map (kbd "C-k")   'company-select-previous)
+  (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
   (setq company-idle-delay 0.1)
   (add-hook 'prog-mode-hook 'global-company-mode))
 
@@ -210,6 +217,7 @@
 (use-package cargo
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
+(use-package toml-mode)
   
 ;; Haskell
 (use-package lsp-haskell
@@ -229,7 +237,7 @@
  ;; If there is more than one, they won't work right.
  '(evil-collection-setup-minibuffer t)
  '(lsp-rust-analyzer-inlay-hints t t)
- '(lsp-rust-server (quote rust-analyzer))
+ '(lsp-rust-server (quote rust-analyzer) t)
  '(package-selected-packages
    (quote
     (evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
