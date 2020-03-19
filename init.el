@@ -16,6 +16,9 @@
 
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(setq recentf-max-saved-items 25)
 (setq auto-save-default nil)
 (setq make-backup-files nil)
 (add-to-list 'default-frame-alist '(font . "Hack-13"))
@@ -33,9 +36,13 @@
   :config
   (load-theme 'dracula t))
 
-(use-package color-identifiers-mode
+(use-package rainbow-identifiers
   :config
-  (add-hook 'after-init-hook 'global-color-identifiers-mode))
+  (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
+
+;; (use-package color-identifiers-mode
+;;   :config
+;;   (add-hook 'after-init-hook 'global-color-identifiers-mode))
 
 (use-package auto-package-update
   :config
@@ -60,10 +67,38 @@
   :config
   (powerline-evil-vim-color-theme))
 
-;;(use-package evil-leader
-;; ;; :config
-;; (global-evil-leader-mode)
-;; (evil-leader/set-leader "<SPC>"))
+(defun my-cargo-process-test()
+  "Run cargo test"
+  (interactive)
+  (cargo-process--start "Test" "test --all"))
+
+(defun my-open-dot-file()
+  (interactive)
+  (find-file "~/.emacs.d/init.el"))
+
+(defun my-load-dot-file()
+  (interactive)
+  (load-file "~/.emacs.d/init.el"))
+
+(use-package evil-leader
+ :config
+ (evil-leader/set-leader "<SPC>")
+ (evil-leader/set-key
+   "f e"   'my-open-dot-file
+   "f r"   'my-load-dot-file
+   "g"     'magit
+   "t"     'treemacs
+   "r"     'recentf-open-files
+   "e"     'find-file
+   "<tab>" 'previous-buffer)
+ (evil-leader/set-key-for-mode
+   'rust-mode
+   "c c"   'cargo-process-check
+   "c b"   'cargo-process-build
+   "c t"   'my-cargo-process-test)
+ (global-evil-leader-mode))
+
+(use-package evil-magit)
 
 (use-package evil-collection
   :after evil
@@ -127,32 +162,11 @@
   :config
   (popwin-mode 1))
 
-(use-package neotree
-  :config
-  (global-set-key [f2] 'neotree-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "TAB") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "SPC") 'neotree-quick-look)
-  (evil-define-key 'normal neotree-mode-map (kbd "q")   'neotree-hide)
-  (evil-define-key 'normal neotree-mode-map (kbd "RET") 'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "l")   'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "h")   'neotree-enter)
-  (evil-define-key 'normal neotree-mode-map (kbd "g")   'neotree-refresh)
-  (evil-define-key 'normal neotree-mode-map (kbd "j")   'neotree-next-line)
-  (evil-define-key 'normal neotree-mode-map (kbd "k")   'neotree-previous-line)
-  (evil-define-key 'normal neotree-mode-map (kbd "c")   'neotree-create-node)
-  (evil-define-key 'normal neotree-mode-map (kbd "d")   'neotree-delete-node)
-  (evil-define-key 'normal neotree-mode-map (kbd "r")   'neotree-rename-node)
-  (evil-define-key 'normal neotree-mode-map (kbd "A")   'neotree-stretch-toggle)
-  (evil-define-key 'normal neotree-mode-map (kbd "H")   'neotree-hidden-file-toggle)
-  (setq-default neo-persist-show t)
-  (when neo-persist-show
-    (add-hook 'popwin:before-popup-hook
-              (lambda () (setq neo-persist-show nil)))
-    (add-hook 'popwin:after-popup-hook
-              (lambda () (setq neo-persist-show t))))
-  (use-package all-the-icons
-    )
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+(use-package treemacs)
+(use-package treemacs-evil)
+(use-package treemacs-projectile)
+(use-package treemacs-magit)
+(use-package treemacs-icons-dired)
 
 ;; Emacs Lisp
 (use-package company
@@ -174,21 +188,17 @@
 
 ;; Rust
 (use-package lsp-mode
+  :custom
+  (lsp-rust-server 'rust-analyzer)
+  (lsp-rust-analyzer-inlay-hints t)
   :config
   (add-hook 'rust-mode-hook #'lsp))
-  ;;(use-package dash)
-  ;;(use-package ht)
-  ;;(load "~/.emacs.d/rust-analyzer")
-  ;;(require 'rust-analyzer)
-  ;;(setq lsp-rust-server 'rust-analyzer)
-  ;;(setq lsp-rust-analyzer-inlay-hints t)
 (use-package flycheck-rust
   :config
   (add-hook 'rust-mode-hook 'flycheck-mode))
 (use-package cargo
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
-
   
 ;; Haskell
 (use-package lsp-haskell
@@ -206,9 +216,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(evil-collection-setup-minibuffer t)
+ '(lsp-rust-analyzer-inlay-hints t t)
+ '(lsp-rust-server (quote rust-analyzer))
  '(package-selected-packages
    (quote
-    (yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
