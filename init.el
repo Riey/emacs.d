@@ -73,6 +73,13 @@
   :config
   (powerline-evil-vim-color-theme))
 
+(use-package evil-magit
+  :after evil)
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+
 (defun my-cargo-process-test()
   "Run cargo test"
   (interactive)
@@ -87,39 +94,36 @@
   (load-file "~/.emacs.d/init.el"))
 
 (use-package evil-leader
- :config
- (evil-leader/set-leader "<SPC>")
- (evil-leader/set-key
-   "f e"   'my-open-dot-file
-   "f r"   'my-load-dot-file
-   "g"     'magit
-   "t"     'treemacs
-   "r"     'recentf-open-files
-   "e"     'find-file
-   "<tab>" 'mode-line-other-buffer)
- (evil-leader/set-key-for-mode
-   'lsp-mode
-   "l g g" 'lsp-goto-type-definition
-   "l g r" 'lsp-find-references
-   "l r"   'lsp-rename
-   "l b r" 'lsp-restart-workspace
-   "l h"   'lsp-hover
-   "l a"   'lsp-auto-execute-action
-   "l f"   'lsp-format-buffer
-   "l l"   'lsp-lens-mode)
- (evil-leader/set-key-for-mode
-   'rust-mode
-   "c c"   'cargo-process-check
-   "c f"   'cargo-process-fmt
-   "c b"   'cargo-process-build
-   "c t"   'my-cargo-process-test)
- (global-evil-leader-mode))
-
-(use-package evil-magit)
-(use-package evil-escape
+  :after evil
   :config
-  (setq evil-escape-key-sequence "jk")
-  (evil-escape-mode))
+  (evil-leader/set-leader "<SPC>")
+  (evil-leader/set-key
+    "b d"   'kill-buffer
+    "w d"   'quit-window
+    "f e"   'my-open-dot-file
+    "f r"   'my-load-dot-file
+    "g"     'magit
+    "t"     'treemacs
+    "r"     'recentf-open-files
+    "e"     'find-file
+    "<tab>" 'mode-line-other-buffer)
+  (evil-leader/set-key-for-mode
+    'lsp-mode
+    "l g g" 'lsp-goto-type-definition
+    "l g r" 'lsp-find-references
+    "l r"   'lsp-rename
+    "l b r" 'lsp-restart-workspace
+    "l h"   'lsp-hover
+    "l a"   'lsp-auto-execute-action
+    "l f"   'lsp-format-buffer
+    "l l"   'lsp-lens-mode)
+  (evil-leader/set-key-for-mode
+    'rust-mode
+    "c c"   'cargo-process-check
+    "c f"   'cargo-process-fmt
+    "c b"   'cargo-process-build
+    "c t"   'my-cargo-process-test)
+  (global-evil-leader-mode))
 
 (use-package lsp-mode
   :config
