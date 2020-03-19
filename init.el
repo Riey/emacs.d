@@ -98,6 +98,15 @@
    "e"     'find-file
    "<tab>" 'previous-buffer)
  (evil-leader/set-key-for-mode
+   'lsp-mode
+   "l g g" 'lsp-goto-type-definition
+   "l g r" 'lsp-find-references
+   "l r"   'lsp-rename
+   "l h"   'lsp-hover
+   "l a"   'lsp-auto-execute-action
+   "l f"   'lsp-format-buffer
+   "l l"   'lsp-lens-mode)
+ (evil-leader/set-key-for-mode
    'rust-mode
    "c c"   'cargo-process-check
    "c f"   'cargo-process-fmt
