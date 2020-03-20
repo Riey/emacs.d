@@ -14,6 +14,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(setq gc-cons-threshold 1000000000)
+(setq read-process-output-max (* 1024 1024))
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode)
 (electric-pair-mode)
@@ -113,7 +115,7 @@
     "l r"   'lsp-rename
     "l b r" 'lsp-restart-workspace
     "l h"   'lsp-hover
-    "l a"   'lsp-auto-execute-action
+    "l a"   'lsp-execute-code-action
     "l f"   'lsp-format-buffer
     "l l"   'lsp-lens-mode)
   (evil-leader/set-key-for-mode
@@ -128,9 +130,17 @@
   :config
   (setq lsp-eldoc-enable-hover t)
   (setq lsp-eldoc-render-all t)
-  (setq lsp-prefer-flymake nil)
+  (setq lsp-auto-execute-action t)
+  (setq lsp-diagnostic-package :flycheck)
   (setq lsp-enable-completion-at-point t)
-  (setq lsp-enable-xref t))
+  (setq lsp-enable-imenu t)
+  (setq lsp-enable-indentation t)
+  (setq lsp-enable-snippet t)
+  (setq lsp-enable-semantic-highlighting t)
+  (setq lsp-enable-symbol-highlighting t)
+  (setq lsp-enable-text-document-color t)
+  (setq lsp-enable-xref t)
+  (setq lsp-prefer-capf t))
 
 (use-package which-key
   :config
@@ -145,8 +155,13 @@
 (use-package lsp-ui
   :after lsp-mode
   :config
-  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-doc-enable nil)
   (setq lsp-ui-peek-always-show t)
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-sideline-show-diagnostics t)
+  (setq lsp-ui-sideline-show-hover t)
+  (setq lsp-ui-sideline-show-symbol t)
+  (setq lsp-ui-sideline-ignore-duplicate t)
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package company
@@ -158,7 +173,8 @@
   (define-key company-active-map (kbd "C-j")   'company-select-next)
   (define-key company-active-map (kbd "C-k")   'company-select-previous)
   (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
-  (setq company-idle-delay 0.1)
+  (setq company-minimum-prefix-length 1)
+  (setq company-idle-delay 0.0)
   (add-hook 'prog-mode-hook 'global-company-mode))
 
 (use-package company-lsp
@@ -208,7 +224,7 @@
 (use-package lsp-mode
   :custom
   (lsp-rust-server 'rust-analyzer)
-  (lsp-rust-analyzer-inlay-hints t)
+  (lsp-rust-analyzer-server-display-inlay-hints t)
   :config
   (add-hook 'rust-mode-hook #'lsp))
 (use-package flycheck-rust
