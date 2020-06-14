@@ -14,7 +14,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq gc-cons-threshold 1000000000)
+(setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024))
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode)
@@ -34,12 +34,6 @@
 
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
-
-(use-package auto-package-update
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
 
 (use-package dracula-theme
   :config
@@ -110,6 +104,8 @@
     "r"     'recentf-open-files
     "e"     'find-file
     "<tab>" 'mode-line-other-buffer
+    "p r"   'projectile-ripgrep
+    "p f"   'projectile-find-file
     "l g g" 'lsp-find-definition
     "l g r" 'lsp-find-references
     "l r"   'lsp-rename
@@ -120,10 +116,13 @@
     "l l"   'lsp-lens-mode)
   (evil-leader/set-key-for-mode
     'rust-mode
+    "c a"   'cargo-process-add
+    "c r"   'cargo-process-rm
     "c c"   'cargo-process-check
     "c f"   'cargo-process-fmt
     "c b"   'cargo-process-build
-    "c t"   'my-cargo-process-test)
+    "c t t" 'cargo-process-test
+    "c t a" 'my-cargo-process-test)
   (global-evil-leader-mode))
 
 (use-package lsp-mode
@@ -207,6 +206,8 @@
   :config
   (push 'company-elisp company-backends))
 
+(use-package typescript-mode)
+
 ;; GLSL
 (use-package glsl-mode
   :init
@@ -224,7 +225,6 @@
 (use-package lsp-mode
   :custom
   (lsp-rust-server 'rust-analyzer)
-  (lsp-rust-analyzer-server-display-inlay-hints t)
   :config
   (add-hook 'rust-mode-hook #'lsp))
 (use-package flycheck-rust
@@ -246,17 +246,23 @@
     :config
     (add-hook 'haskell-mode-hook 'flycheck-mode)))
 
+(use-package kes-mode
+  :load-path "~/repos/kes-mode")
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(evil-collection-setup-minibuffer t)
- '(lsp-rust-analyzer-inlay-hints t t)
- '(lsp-rust-server (quote rust-analyzer) t)
+ '(lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
+ '(lsp-rust-analyzer-server-display-inlay-hints t)
+ '(lsp-rust-analyzer-display-parameter-hints t)
+ '(lsp-rust-analyzer-proc-macro-enable t)
+ '(lsp-rust-server (quote rust-analyzer))
  '(package-selected-packages
    (quote
-    (evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+    (all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
