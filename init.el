@@ -81,6 +81,11 @@
   :config
   (evil-collection-init))
 
+(defun my-cargo-process-run-release()
+  "Run cargo run --relase"
+  (interactive)
+  (cargo-process--start "Run" "run --release"))
+
 (defun my-cargo-process-test()
   "Run cargo test"
   (interactive)
@@ -120,8 +125,11 @@
     "l l"   'lsp-lens-mode)
   (evil-leader/set-key-for-mode
     'rust-mode
+    "c n"   'cargo-process-new
     "c a"   'cargo-process-add
-    "c r"   'cargo-process-rm
+    "c m"   'cargo-process-rm
+    "c r d" 'cargo-process-run-debug
+    "c r r" 'my-cargo-process-run-release
     "c c"   'cargo-process-check
     "c f"   'cargo-process-fmt
     "c b"   'cargo-process-build
@@ -169,6 +177,7 @@
 
 (use-package company
   :config
+  (push 'company-capf company-backends)
   (define-key company-mode-map (kbd "C-SPC") 'company-complete-common)
   (define-key company-active-map (kbd "C-l")   'company-complete-selection)
   (define-key company-active-map (kbd "<return>")   'company-complete-selection)
@@ -180,10 +189,8 @@
   (setq company-idle-delay 0.0)
   (add-hook 'prog-mode-hook 'global-company-mode))
 
-(use-package company-lsp
-  :after company
-  :config
-  (push 'company-lsp company-backends))
+(use-package company-box
+  :hook (company-mode . company-box-mode))
 
 (use-package rainbow-delimiters
   :config
@@ -260,13 +267,12 @@
  ;; If there is more than one, they won't work right.
  '(evil-collection-setup-minibuffer t)
  '(lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
- '(lsp-rust-analyzer-server-display-inlay-hints t)
  '(lsp-rust-analyzer-display-parameter-hints t)
  '(lsp-rust-analyzer-proc-macro-enable t)
- '(lsp-rust-server (quote rust-analyzer))
+ '(lsp-rust-analyzer-server-display-inlay-hints t)
+ '(lsp-rust-server 'rust-analyzer t)
  '(package-selected-packages
-   (quote
-    (all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company-lsp company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode))))
+   '(frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
