@@ -14,9 +14,13 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;; Enable JIT
+(setq comp-deferred-compilation t)
+
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024))
 (setq display-line-numbers-type 'relative)
+(setq warning-minimum-level :emergency)
 (global-display-line-numbers-mode)
 (electric-pair-mode)
 (recentf-mode 1)
