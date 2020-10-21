@@ -123,7 +123,7 @@
     'rust-mode
     "c a"   'cargo-process-add
     "c m"   'cargo-process-rm
-    "c r d" 'cargo-process-run-debug
+    "c r d" 'cargo-process-run
     "c r r" 'my-cargo-process-run-release
     "c c"   'cargo-process-check
     "c f"   'cargo-process-fmt
