@@ -47,10 +47,6 @@
   :config
   (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
 
-;; (use-package color-identifiers-mode
-;;   :config
-;;   (add-hook 'after-init-hook 'global-color-identifiers-mode))
-
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t)
@@ -78,8 +74,8 @@
   :after evil)
 (use-package evil-collection
   :after evil
-  :config
-  (evil-collection-init))
+  :custom (evil-collection-setup-minibuffer t)
+  :init (evil-collection-init))
 
 (defun my-cargo-process-run-release()
   "Run cargo run --relase"
@@ -95,6 +91,10 @@
   (interactive)
   (find-file "~/.emacs.d/init.el"))
 
+(defun my-open-repos()
+  (interactive)
+  (dired "~/repos"))
+
 (defun my-load-dot-file()
   (interactive)
   (load-file "~/.emacs.d/init.el"))
@@ -106,26 +106,21 @@
   (evil-leader/set-key
     "b d"   'kill-buffer
     "w d"   'quit-window
-    "f e"   'my-open-dot-file
+    "f e"   'find-file
+    "f d"   'my-open-dot-file
+    "f w"   'my-open-repos
     "f r"   'my-load-dot-file
     "g"     'magit
-    "t"     'treemacs
     "r"     'recentf-open-files
-    "e"     'find-file
     "<tab>" 'mode-line-other-buffer
+
+    "t"     'neotree-projectile-action
+
     "p r"   'projectile-ripgrep
     "p f"   'projectile-find-file
-    "l g g" 'lsp-find-definition
-    "l g r" 'lsp-find-references
-    "l r"   'lsp-rename
-    "l b r" 'lsp-restart-workspace
-    "l h"   'lsp-hover
-    "l a"   'lsp-execute-code-action
-    "l f"   'lsp-format-buffer
-    "l l"   'lsp-lens-mode)
+    "c n"   'cargo-process-new)
   (evil-leader/set-key-for-mode
     'rust-mode
-    "c n"   'cargo-process-new
     "c a"   'cargo-process-add
     "c m"   'cargo-process-rm
     "c r d" 'cargo-process-run-debug
@@ -135,6 +130,16 @@
     "c b"   'cargo-process-build
     "c t t" 'cargo-process-test
     "c t a" 'my-cargo-process-test)
+  (evil-leader/set-key-for-mode
+    'lsp-mode
+    "l g g" 'lsp-find-definition
+    "l g r" 'lsp-find-references
+    "l r"   'lsp-rename
+    "l b r" 'lsp-restart-workspace
+    "l h"   'lsp-hover
+    "l a"   'lsp-execute-code-action
+    "l f"   'lsp-format-buffer
+    "l l"   'lsp-lens-mode)
   (global-evil-leader-mode))
 
 (use-package lsp-mode
@@ -206,11 +211,31 @@
   :config
   (popwin-mode 1))
 
-(use-package treemacs)
-(use-package treemacs-evil)
-(use-package treemacs-projectile)
-(use-package treemacs-magit)
-(use-package treemacs-icons-dired)
+(use-package all-the-icons)
+
+(use-package neotree
+  :init
+  (setq neo-theme 'icons))
+
+;;  (use-package treemacs
+;;    :config
+;;    (progn
+;;      (setq treemacs-collapse-dirs (if treemacs-python-executable 3 0)
+;;            treemacs-project-follow-cleanup t
+;;            treemacs-workspace-switch-cleanup t)
+;;      (treemacs-follow-mode t)
+;;      (treemacs-filewatch-mode t)
+;;      (treemacs-fringe-indicator-mode t)
+;;      (treemacs-git-mode 'defered))
+;;  (use-package treemacs-evil
+;;    :after treemacs evil)
+;;  (use-package treemacs-projectile
+;;    :after treemacs projectile)
+;;  (use-package treemacs-magit
+;;    :after treemacs magit)
+;;  (use-package treemacs-icons-dired
+;;    :after treemacs dired
+;;    :config (treemacs-icons-dired-mode))
 
 ;; Emacs Lisp
 (use-package company
@@ -236,6 +261,10 @@
 (use-package lsp-mode
   :custom
   (lsp-rust-server 'rust-analyzer)
+ '(lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
+ '(lsp-rust-analyzer-display-parameter-hints t)
+ '(lsp-rust-analyzer-proc-macro-enable t)
+ '(lsp-rust-analyzer-server-display-inlay-hints t)
   :config
   (add-hook 'rust-mode-hook #'lsp))
 (use-package flycheck-rust
@@ -265,12 +294,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(evil-collection-setup-minibuffer t)
- '(lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
- '(lsp-rust-analyzer-display-parameter-hints t)
- '(lsp-rust-analyzer-proc-macro-enable t)
- '(lsp-rust-analyzer-server-display-inlay-hints t)
- '(lsp-rust-server 'rust-analyzer t)
  '(package-selected-packages
    '(frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
 (custom-set-faces
