@@ -123,7 +123,16 @@
 
     "p r"   'projectile-ripgrep
     "p f"   'projectile-find-file
-    "c n"   'cargo-process-new)
+    "c n"   'cargo-process-new
+
+    "l g g" 'lsp-find-definition
+    "l g r" 'lsp-find-references
+    "l r"   'lsp-rename
+    "l b r" 'lsp-restart-workspace
+    "l h"   'lsp-hover
+    "l a"   'lsp-execute-code-action
+    "l f"   'lsp-format-buffer
+    "l l"   'lsp-lens-mode)
   (evil-leader/set-key-for-mode
     'rust-mode
     "c a"   'cargo-process-add
@@ -135,16 +144,6 @@
     "c b"   'cargo-process-build
     "c t t" 'cargo-process-test
     "c t a" 'my-cargo-process-test)
-  (evil-leader/set-key-for-mode
-    'lsp-mode
-    "l g g" 'lsp-find-definition
-    "l g r" 'lsp-find-references
-    "l r"   'lsp-rename
-    "l b r" 'lsp-restart-workspace
-    "l h"   'lsp-hover
-    "l a"   'lsp-execute-code-action
-    "l f"   'lsp-format-buffer
-    "l l"   'lsp-lens-mode)
   (global-evil-leader-mode))
 
 (use-package lsp-mode
@@ -176,7 +175,7 @@
 (use-package lsp-ui
   :after lsp-mode
   :config
-  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-doc-enable t)
   (setq lsp-ui-peek-always-show t)
   (setq lsp-ui-sideline-show-code-actions t)
   (setq lsp-ui-sideline-show-diagnostics t)
