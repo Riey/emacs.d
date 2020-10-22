@@ -128,7 +128,7 @@
     "l g g" 'lsp-find-definition
     "l g r" 'lsp-find-references
     "l r"   'lsp-rename
-    "l b r" 'lsp-restart-workspace
+    "l b r" 'lsp-workspace-restart
     "l h"   'lsp-hover
     "l a"   'lsp-execute-code-action
     "l f"   'lsp-format-buffer
