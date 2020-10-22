@@ -175,7 +175,11 @@
 
     "p r"   'projectile-ripgrep
     "p f"   'projectile-find-file
+
     "c n"   'cargo-process-new
+
+    "h n"   'hl-todo-next
+    "h p"   'hl-todo-previous
 
     "l g g" 'lsp-find-definition
     "l g r" 'lsp-find-references
@@ -263,10 +267,7 @@
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package hl-todo
-  :hook (prog-mode . hl-todo-mode)
-  :config
-  (define-key hl-todo-mode-map (kbd "C-t p") 'hl-todo-previous)
-  (define-key hl-todo-mode-map (kbd "C-t n") 'hl-todo-next))
+  :hook (prog-mode . hl-todo-mode))
 
 (use-package popwin
   :config
