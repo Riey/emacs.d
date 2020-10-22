@@ -29,6 +29,7 @@
 (global-display-line-numbers-mode)
 (electric-pair-mode)
 (recentf-mode 1)
+(setq comint-move-point-for-output t)
 (setq create-lockfiles nil)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
@@ -48,8 +49,7 @@
   (load-theme 'dracula t))
 
 (use-package rainbow-identifiers
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-identifiers-mode))
+  :hook (prog-mode . rainbow-identifiers-mode))
 
 (use-package auto-package-update
   :config
@@ -64,11 +64,49 @@
   (add-to-list 'recentf-exclude no-littering-var-directory)
   (add-to-list 'recentf-exclude no-littering-etc-directory))
 
+(use-package multi-term
+  :config
+  (setq multi-term-program "/bin/zsh")
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (setq term-buffer-maximum-size 10000)))
+  (add-hook 'term-mode-hook
+            (lambda ()
+              (setq show-trailing-whitespace nil))))
+
+(use-package xterm-color)
+
 (use-package ivy
   :config
   (ivy-mode 1))
 
 (use-package magit)
+
+(use-package golden-ratio
+  :config
+  (setq golden-ratio-auto-scale t)
+  (golden-ratio-mode t)
+  (setq golden-ratio-extra-commands
+        (append golden-ratio-extra-commands
+                '(evil-window-left
+                  evil-window-right
+                  evil-window-up
+                  evil-window-down
+                  buf-move-left
+                  buf-move-right
+                  buf-move-up
+                  buf-move-down
+                  window-number-select
+                  select-window
+                  select-window-1
+                  select-window-2
+                  select-window-3
+                  select-window-4
+                  select-window-5
+                  select-window-6
+                  select-window-7
+                  select-window-8
+                  select-window-9))))
 
 (use-package evil
   :init
@@ -87,6 +125,13 @@
   :after evil
   :custom (evil-collection-setup-minibuffer t)
   :init (evil-collection-init))
+
+(defun my-multi-term()
+  "Open multi-term on buttom"
+  (interactive)
+  (split-window-below)
+  (other-window 1)
+  (multi-term))
 
 (defun my-cargo-process-run-release()
   "Run cargo run --relase"
@@ -121,6 +166,7 @@
     "f d"   'my-open-dot-file
     "f w"   'my-open-repos
     "f r"   'my-load-dot-file
+    "s"     'my-multi-term
     "g"     'magit
     "r"     'recentf-open-files
     "<tab>" 'mode-line-other-buffer
@@ -204,16 +250,21 @@
   (setq company-idle-delay 0.0)
   (add-hook 'prog-mode-hook 'global-company-mode))
 
+(use-package company-shell
+  :after company
+  :config
+  (add-to-list 'company-backends '(company-shell company-shell-env company-fish-shell)))
+
 (use-package company-box
+  :after company
   :hook (company-mode . company-box-mode))
 
 (use-package rainbow-delimiters
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package hl-todo
+  :hook (prog-mode . hl-todo-mode)
   :config
-  (add-hook 'prog-mode-hook #'hl-todo-mode)
   (define-key hl-todo-mode-map (kbd "C-t p") 'hl-todo-previous)
   (define-key hl-todo-mode-map (kbd "C-t n") 'hl-todo-next))
 
