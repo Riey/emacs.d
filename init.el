@@ -17,6 +17,11 @@
 ;; Enable JIT
 (setq comp-deferred-compilation t)
 
+;; Set Korean
+(set-language-environment "Korean")
+(prefer-coding-system 'utf-8)
+(global-set-key (kbd "<S-kana>") 'toggle-input-method)
+
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024))
 (setq display-line-numbers-type 'relative)
@@ -294,6 +299,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(default-input-method "korean-hangul")
  '(package-selected-packages
    '(frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
 (custom-set-faces
