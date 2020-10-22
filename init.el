@@ -29,10 +29,9 @@
 (global-display-line-numbers-mode)
 (electric-pair-mode)
 (recentf-mode 1)
+(setq create-lockfiles nil)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
-(setq auto-save-default nil)
-(setq make-backup-files nil)
 (add-to-list 'default-frame-alist '(font . "Hack-13"))
 (set-face-attribute 'default t :font "Hack-13")
 (set-fontset-font t 'hangul (font-spec :name "D2Coding-13"))
@@ -57,6 +56,13 @@
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
+
+(use-package no-littering
+  :init
+  (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  (setq backup-directory-alist `((".*" . ,(no-littering-expand-var-file-name "backup/"))))
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory))
 
 (use-package ivy
   :config
