@@ -321,19 +321,19 @@
 
 ;; Rust
 (use-package lsp-mode
+  :hook
+  (rust-mode . lsp)
   :custom
   (lsp-rust-analyzer-cargo-load-out-dirs-from-check t)
   (lsp-rust-analyzer-display-parameter-hints t)
   (lsp-rust-analyzer-proc-macro-enable t)
-  (lsp-rust-analyzer-server-display-inlay-hints t)
-  :config
-  (add-hook 'rust-mode-hook #'lsp))
+  (lsp-rust-analyzer-server-display-inlay-hints t))
 (use-package flycheck-rust
-  :config
-  (add-hook 'rust-mode-hook 'flycheck-mode))
+  :hook
+  (rust-mode . flycheck-mode))
 (use-package cargo
-  :config
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
+  :hook
+  (rust-mode . cargo-minor-mode))
 (use-package toml-mode)
   
 ;; Haskell
