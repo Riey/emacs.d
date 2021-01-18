@@ -1,4 +1,11 @@
 *~
 /elpa
+/eln-cache
+/recentf
+/.cache
+/transient
+/.last-package-update-day
+/.dap-breakpoints
+/projectile-bookmarks.eld
 /auto-save-list
 .lsp*

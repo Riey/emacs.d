@@ -16,6 +16,7 @@
 
 ;; Enable JIT
 (setq comp-deferred-compilation t)
+(setq package-native-compile t)
 
 ;; Set Korean
 (set-language-environment "Korean")
@@ -31,6 +32,7 @@
 (recentf-mode 1)
 (setq comint-move-point-for-output t)
 (setq create-lockfiles nil)
+(setq make-backup-files nil)
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
 (add-to-list 'default-frame-alist '(font . "Hack-13"))
@@ -48,21 +50,15 @@
   :config
   (load-theme 'dracula t))
 
-(use-package rainbow-identifiers
-  :hook (prog-mode . rainbow-identifiers-mode))
+;; Disable for speed
+;; (use-package rainbow-identifiers
+;;   :hook (prog-mode . rainbow-identifiers-mode))
 
 (use-package auto-package-update
   :config
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
-
-(use-package no-littering
-  :init
-  (setq auto-save-file-name-transforms `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
-  (setq backup-directory-alist `((".*" . ,(no-littering-expand-var-file-name "backup/"))))
-  (add-to-list 'recentf-exclude no-littering-var-directory)
-  (add-to-list 'recentf-exclude no-littering-etc-directory))
 
 (use-package multi-term
   :config
@@ -73,8 +69,6 @@
   (add-hook 'term-mode-hook
             (lambda ()
               (setq show-trailing-whitespace nil))))
-
-(use-package xterm-color)
 
 (use-package ivy
   :config
@@ -107,13 +101,23 @@
                   select-window-7
                   select-window-8
                   select-window-9))))
-
 (use-package evil
-  :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding  nil)
+   :custom
+   (evil-want-integration t)
+   (evil-want-minibuffer t)
+   (evil-want-keybinding  nil)
+   :config
+   (evil-mode 1))
+(use-package undo-tree
   :config
-  (evil-mode 1))
+  (global-undo-tree-mode))
+(use-package undo-fu
+  :config
+  (define-key evil-normal-state-map "u" 'undo-fu-only-undo)
+  (define-key evil-normal-state-map "\C-r" 'undo-fu-only-redo)
+  (global-unset-key (kbd "C-z"))
+  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
+  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
 
 (use-package powerline-evil
   :config
@@ -123,8 +127,9 @@
   :after evil)
 (use-package evil-collection
   :after evil
-  :custom (evil-collection-setup-minibuffer t)
-  :init (evil-collection-init))
+  :custom
+  (evil-collection-setup-minibuffer t)
+  :config (evil-collection-init))
 
 (defun my-multi-term()
   "Open multi-term on buttom"
@@ -171,7 +176,7 @@
     "r"     'recentf-open-files
     "<tab>" 'mode-line-other-buffer
 
-    "t"     'neotree-projectile-action
+    "t"     'treemacs
 
     "p r"   'projectile-ripgrep
     "p f"   'projectile-find-file
@@ -275,29 +280,26 @@
 
 (use-package all-the-icons)
 
-(use-package neotree
-  :init
-  (setq neo-theme 'icons))
+(use-package projectile)
 
-;;  (use-package treemacs
-;;    :config
-;;    (progn
-;;      (setq treemacs-collapse-dirs (if treemacs-python-executable 3 0)
-;;            treemacs-project-follow-cleanup t
-;;            treemacs-workspace-switch-cleanup t)
-;;      (treemacs-follow-mode t)
-;;      (treemacs-filewatch-mode t)
-;;      (treemacs-fringe-indicator-mode t)
-;;      (treemacs-git-mode 'defered))
-;;  (use-package treemacs-evil
-;;    :after treemacs evil)
-;;  (use-package treemacs-projectile
-;;    :after treemacs projectile)
-;;  (use-package treemacs-magit
-;;    :after treemacs magit)
-;;  (use-package treemacs-icons-dired
-;;    :after treemacs dired
-;;    :config (treemacs-icons-dired-mode))
+(use-package treemacs
+  :config
+  (progn
+    (setq treemacs-collapse-dirs (if treemacs-python-executable 3 0)
+          treemacs-project-follow-cleanup t
+          treemacs-workspace-switch-cleanup t)
+    (treemacs-follow-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (treemacs-git-mode 'deferred)))
+(use-package treemacs-evil
+  :after treemacs evil)
+(use-package treemacs-projectile
+  :after treemacs projectile)
+(use-package treemacs-magit
+  :after treemacs magit)
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :config (treemacs-icons-dired-mode))
 
 ;; Emacs Lisp
 (use-package company
@@ -328,6 +330,15 @@
   (lsp-rust-analyzer-display-parameter-hints t)
   (lsp-rust-analyzer-proc-macro-enable t)
   (lsp-rust-analyzer-server-display-inlay-hints t))
+(use-package dap-mode
+  :config
+  (dap-mode 1)
+  (dap-ui-mode 1)
+  (dap-tooltip-mode 1)
+  (tooltip-mode 1)
+  (dap-ui-controls-mode 1)
+  (require 'dap-lldb)
+  (require 'dap-gdb-lldb))
 (use-package flycheck-rust
   :hook
   (rust-mode . flycheck-mode))
@@ -347,8 +358,6 @@
     :config
     (add-hook 'haskell-mode-hook 'flycheck-mode)))
 
-(use-package kes-mode
-  :load-path "~/repos/kes-mode")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -357,7 +366,7 @@
  ;; If there is more than one, they won't work right.
  '(default-input-method "korean-hangul")
  '(package-selected-packages
-   '(frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
+   '(undo-tree dap-python dap-lldb dap-mode yaml-mode frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
