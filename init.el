@@ -362,6 +362,12 @@
 (use-package auctex)
 (use-package pdf-tool)
 
+;; pinentry
+(use-package pinentry
+  :config
+  (setq epa-pinentry-mode 'loopback)
+  (pinentry-start))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
