@@ -21,7 +21,7 @@
 ;; Set Korean
 (set-language-environment "Korean")
 (prefer-coding-system 'utf-8)
-(global-set-key (kbd "<S-kana>") 'toggle-input-method)
+(global-set-key (kbd "<muhenkan>") 'toggle-input-method)
 
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024))
@@ -358,6 +358,9 @@
     :config
     (add-hook 'haskell-mode-hook 'flycheck-mode)))
 
+;; LaTeX
+(use-package auctex)
+(use-package pdf-tool)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
