@@ -60,6 +60,7 @@
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
+(use-package vterm)
 (use-package multi-term
   :config
   (setq multi-term-program "/bin/zsh")
@@ -171,7 +172,7 @@
     "f d"   'my-open-dot-file
     "f w"   'my-open-repos
     "f r"   'my-load-dot-file
-    "s"     'my-multi-term
+    "s"     'vterm
     "g"     'magit
     "r"     'recentf-open-files
     "<tab>" 'mode-line-other-buffer
@@ -368,6 +369,11 @@
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
 
+;; direnv
+(use-package direnv
+  :config
+  (direnv-mode))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -375,7 +381,7 @@
  ;; If there is more than one, they won't work right.
  '(default-input-method "korean-hangul")
  '(package-selected-packages
-   '(undo-tree dap-python dap-lldb dap-mode yaml-mode frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
+   '(direnv pdf-tool undo-tree dap-python dap-lldb dap-mode yaml-mode frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
