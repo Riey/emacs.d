@@ -61,15 +61,6 @@
   (auto-package-update-maybe))
 
 (use-package vterm)
-(use-package multi-term
-  :config
-  (setq multi-term-program "/bin/zsh")
-  (add-hook 'term-mode-hook
-            (lambda ()
-              (setq term-buffer-maximum-size 10000)))
-  (add-hook 'term-mode-hook
-            (lambda ()
-              (setq show-trailing-whitespace nil))))
 
 (use-package ivy
   :config
@@ -132,13 +123,6 @@
   (evil-collection-setup-minibuffer t)
   :config (evil-collection-init))
 
-(defun my-multi-term()
-  "Open multi-term on buttom"
-  (interactive)
-  (split-window-below)
-  (other-window 1)
-  (multi-term))
-
 (defun my-cargo-process-run-release()
   "Run cargo run --relase"
   (interactive)
@@ -179,8 +163,11 @@
 
     "t"     'treemacs
 
+    "p b"   'projectile-compile-project
     "p r"   'projectile-ripgrep
+    "p p"   'projectile-run-project
     "p f"   'projectile-find-file
+    "p s"   'projectile-run-vterm
 
     "c n"   'cargo-process-new
 
@@ -363,11 +350,20 @@
 (use-package auctex)
 (use-package pdf-tool)
 
+;; yaml
+(use-package yaml-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
 ;; pinentry
 (use-package pinentry
   :config
   (setq epa-pinentry-mode 'loopback)
   (pinentry-start))
+
+;; Nix
+(use-package nix-mode
+  :mode "\\.nix\\'")
 
 ;; direnv
 (use-package direnv
