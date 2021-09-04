@@ -30,6 +30,8 @@
 
 ;; Don't write custom code into init.el
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(unless (file-exists-p custom-file)
+  (with-temp-buffer (write-file custom-file)))
 (load custom-file)
 
 (global-display-line-numbers-mode)
@@ -65,6 +67,7 @@
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
+(use-package dash)
 (use-package vterm)
 
 (use-package ivy
@@ -99,12 +102,14 @@
                   select-window-8
                   select-window-9))))
 (use-package evil
-   :custom
-   (evil-want-integration t)
-   (evil-want-minibuffer t)
-   (evil-want-keybinding  nil)
+   :init
+   (setq evil-want-integration t)
+   (setq evil-want-keybinding nil)
    :config
    (evil-mode 1))
+(use-package evil-collection
+  :after evil
+  :config (evil-collection-init))
 (use-package undo-tree
   :config
   (global-undo-tree-mode))
@@ -122,11 +127,6 @@
 
 (use-package evil-magit
   :after evil)
-(use-package evil-collection
-  :after evil
-  :custom
-  (evil-collection-setup-minibuffer t)
-  :config (evil-collection-init))
 
 (defun my-cargo-process-run-release()
   "Run cargo run --relase"
@@ -151,7 +151,7 @@
   (load-file "~/.emacs.d/init.el"))
 
 (use-package evil-leader
-  :after evil
+  :after evil-collection
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
