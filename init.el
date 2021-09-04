@@ -27,6 +27,11 @@
 (setq read-process-output-max (* 1024 1024))
 (setq display-line-numbers-type 'relative)
 (setq warning-minimum-level :emergency)
+
+;; Don't write custom code into init.el
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
 (global-display-line-numbers-mode)
 (electric-pair-mode)
 (recentf-mode 1)
@@ -369,21 +374,6 @@
 (use-package direnv
   :config
   (direnv-mode))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default-input-method "korean-hangul")
- '(package-selected-packages
-   '(direnv pdf-tool undo-tree dap-python dap-lldb dap-mode yaml-mode frame-local all-the-icons-ivy typescript-mode ripgrep evil-escape evil-magit rainbow-identifiers yasnippet company-anaconda avy-flycheck all-the-icons company-glsl glsl-mode flycheck-rust visual-regexp-steroids hl-todo rainbow-delimiters restart-emacs cargo use-package company evil dracula-theme lsp-ui flycheck powerline projectile lsp-rust lsp-haskell lsp-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((((min-colors 16777216)) (:background "#282a36" :foreground "#f8f8f2")) (t (:background "#000000" :foreground "#f8f8f2")))))
 
 (provide 'init)
 ;;; init.el ends here
