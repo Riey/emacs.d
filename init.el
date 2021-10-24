@@ -25,7 +25,7 @@
 
 (setq gc-cons-threshold 10000000)
 (setq read-process-output-max (* 1024 1024))
-(setq display-line-numbers-type 'relative)
+;; (setq display-line-numbers-type 'relative)
 (setq warning-minimum-level :emergency)
 
 ;; Don't write custom code into init.el
@@ -72,7 +72,8 @@
 
 (use-package ivy
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  (setq ivy-use-selectable-prompt t))
 
 (use-package magit)
 
@@ -315,6 +316,7 @@
   (add-to-list 'company-backends 'company-glsl))
 
 ;; Rust
+(use-package rust-mode)
 (use-package lsp-mode
   :hook
   (rust-mode . lsp)
